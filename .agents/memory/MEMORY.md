@@ -1,0 +1,1 @@
+- [Generated browser client types](generated-browser-client-types.md) — Orval clients using Headers.entries need DOM iterable typings in the client library.

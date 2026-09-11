@@ -10,6 +10,8 @@ servers:
 tags:
   - name: health
     description: Health operations
+  - name: campus
+    description: Campus discovery and participation
 paths:
   /healthz:
     get:
@@ -24,6 +26,182 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
+  /dashboard-summary:
+    get:
+      operationId: getDashboardSummary
+      tags: [campus]
+      summary: Get the student dashboard summary
+      responses:
+        "200":
+          description: Dashboard summary
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DashboardSummary"
+  /clubs:
+    get:
+      operationId: listClubs
+      tags: [campus]
+      summary: List clubs
+      parameters:
+        - name: q
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: category
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: sort
+          in: query
+          required: false
+          schema:
+            type: string
+            enum: [popular, alphabetical, newest]
+      responses:
+        "200":
+          description: Clubs
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Club"
+  /clubs/{id}:
+    get:
+      operationId: getClub
+      tags: [campus]
+      summary: Get a club
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Club details
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Club"
+        "404":
+          description: Club not found
+  /clubs/{id}/interest:
+    post:
+      operationId: expressClubInterest
+      tags: [campus]
+      summary: Express interest in a club
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ClubInterestInput"
+      responses:
+        "201":
+          description: Interest recorded
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InterestConfirmation"
+  /events:
+    get:
+      operationId: listEvents
+      tags: [campus]
+      summary: List campus events
+      parameters:
+        - name: q
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: category
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: timeframe
+          in: query
+          required: false
+          schema:
+            type: string
+            enum: [all, this-week, this-month]
+      responses:
+        "200":
+          description: Events
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/CampusEvent"
+  /events/{id}:
+    get:
+      operationId: getEvent
+      tags: [campus]
+      summary: Get an event
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Event details
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CampusEvent"
+        "404":
+          description: Event not found
+  /events/{id}/register:
+    post:
+      operationId: registerForEvent
+      tags: [campus]
+      summary: Register interest in an event
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/EventRegistrationInput"
+      responses:
+        "201":
+          description: Registration recorded
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InterestConfirmation"
+  /announcements:
+    get:
+      operationId: listAnnouncements
+      tags: [campus]
+      summary: List campus announcements
+      responses:
+        "200":
+          description: Announcements
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Announcement"
 components:
   schemas:
     HealthStatus:
@@ -33,4 +211,88 @@ components:
           type: string
       required:
         - status
+    Club:
+      type: object
+      required: [id, name, category, description, purpose, meetingSchedule, eligibility, memberCount, accent, featured]
+      properties:
+        id: { type: integer }
+        name: { type: string }
+        shortName: { type: ["string", "null"] }
+        category: { type: string }
+        description: { type: string }
+        purpose: { type: string }
+        meetingSchedule: { type: string }
+        eligibility: { type: string }
+        membershipProcess: { type: string }
+        memberCount: { type: integer }
+        accent: { type: string }
+        featured: { type: boolean }
+        tags:
+          type: array
+          items: { type: string }
+    CampusEvent:
+      type: object
+      required: [id, title, category, description, date, time, location, organizer, capacity, spotsLeft, accent, featured]
+      properties:
+        id: { type: integer }
+        title: { type: string }
+        category: { type: string }
+        description: { type: string }
+        date: { type: string, format: date }
+        time: { type: string }
+        location: { type: string }
+        organizer: { type: string }
+        capacity: { type: integer }
+        spotsLeft: { type: integer }
+        accent: { type: string }
+        featured: { type: boolean }
+        tags:
+          type: array
+          items: { type: string }
+    Announcement:
+      type: object
+      required: [id, title, body, publishedAt, kind, urgent]
+      properties:
+        id: { type: integer }
+        title: { type: string }
+        body: { type: string }
+        publishedAt: { type: string, format: date-time }
+        kind: { type: string }
+        urgent: { type: boolean }
+    DashboardSummary:
+      type: object
+      required: [clubCount, eventCount, activeStudents, featuredClubs, upcomingEvents, latestAnnouncement]
+      properties:
+        clubCount: { type: integer }
+        eventCount: { type: integer }
+        activeStudents: { type: integer }
+        featuredClubs:
+          type: array
+          items: { $ref: "#/components/schemas/Club" }
+        upcomingEvents:
+          type: array
+          items: { $ref: "#/components/schemas/CampusEvent" }
+        latestAnnouncement:
+          oneOf:
+            - $ref: "#/components/schemas/Announcement"
+            - type: "null"
+    ClubInterestInput:
+      type: object
+      required: [studentName, studentEmail]
+      properties:
+        studentName: { type: string, minLength: 1 }
+        studentEmail: { type: string, format: email }
+        note: { type: ["string", "null"] }
+    EventRegistrationInput:
+      type: object
+      required: [studentName, studentEmail]
+      properties:
+        studentName: { type: string, minLength: 1 }
+        studentEmail: { type: string, format: email }
+    InterestConfirmation:
+      type: object
+      required: [success, message]
+      properties:
+        success: { type: boolean }
+        message: { type: string }
 
