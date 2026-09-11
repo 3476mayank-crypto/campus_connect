@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Campus Connect - Hackathon Project</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 600px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            padding: 40px;
+            text-align: center;
+        }
+        
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 2.5em;
+        }
+        
+        .subtitle {
+            color: #666;
+            font-size: 1.1em;
+            margin-bottom: 30px;
+        }
+        
+        .status {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            margin-bottom: 30px;
+            font-size: 0.9em;
+            font-weight: 600;
+        }
+        
+        .links {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 30px;
+        }
+        
+        .link-btn {
+            display: inline-block;
+            padding: 12px 24px;
+            background: #667eea;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .link-btn:hover {
+            background: #764ba2;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+        }
+        
+        .link-btn.secondary {
+            background: #f0f0f0;
+            color: #333;
+        }
+        
+        .link-btn.secondary:hover {
+            background: #e0e0e0;
+        }
+        
+        .features {
+            margin-top: 40px;
+            text-align: left;
+            padding-top: 30px;
+            border-top: 2px solid #f0f0f0;
+        }
+        
+        .features h3 {
+            color: #333;
+            margin-bottom: 15px;
+        }
+        
+        .features ul {
+            list-style: none;
+            color: #666;
+            line-height: 1.8;
+        }
+        
+        .features li:before {
+            content: "✓ ";
+            color: #667eea;
+            font-weight: bold;
+            margin-right: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎓 Campus Connect</h1>
+        <p class="subtitle">Connecting students and campus communities</p>
+        
+        <span class="status">🚀 Hackathon Project</span>
+        
+        <div class="links">
+            <a href="https://github.com/3476mayank-crypto/campus_connect" class="link-btn">View on GitHub</a>
+            <a href="https://github.com/3476mayank-crypto/campus_connect/tree/replit-agent" class="link-btn secondary">Source Code</a>
+        </div>
+        
+        <div class="features">
+            <h3>Tech Stack</h3>
+            <ul>
+                <li><strong>Backend</strong>: Express 5, Node.js 24, TypeScript</li>
+                <li><strong>Database</strong>: PostgreSQL + Drizzle ORM</li>
+                <li><strong>Frontend</strong>: React 19, Tailwind CSS, Vite</li>
+                <li><strong>Monorepo</strong>: pnpm workspaces</li>
+                <li><strong>API</strong>: OpenAPI + Orval code generation</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>
